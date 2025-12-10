@@ -6,6 +6,7 @@
   import CrearEncuesta from './lib/components/CrearEncuesta.svelte';
   import ResponderEncuesta from './lib/components/ResponderEncuesta.svelte';
   import ResultadosEncuesta from './lib/components/ResultadosEncuesta.svelte';
+  import {eliminarEncuesta } from './lib/api';
 
   let encuestas = [];
   let cargando = false;
@@ -45,6 +46,22 @@
   function irAResultados(encuesta) {
     encuestaSeleccionada = encuesta;
     vista = 'resultados';
+  }
+
+  function irAEditar(encuesta) {
+    encuestaSeleccionada = encuesta;
+    vista = 'editar';
+  }
+
+  async function eliminarDesdeLista(encuesta) {
+    if (!confirm(`¿Eliminar la encuesta "${encuesta.pregunta}"?`)) return;
+
+    try {
+      await eliminarEncuesta(encuesta.id);
+      await cargarEncuestas();
+    } catch (e) {
+      error = e.message || 'Error al eliminar encuesta.';
+    }
   }
 
   onMount(cargarEncuestas);
@@ -112,6 +129,8 @@
             {encuestas}
             on:responder={(e) => irAResponder(e.detail)}
             on:verResultados={(e) => irAResultados(e.detail)}
+            on:editar={(e) => irAEditar(e.detail)}
+            on:eliminar={(e) => eliminarDesdeLista(e.detail)}
           />
 
         {:else if vista === 'crear'}
@@ -125,6 +144,14 @@
         {:else if vista === 'resultados'}
           <h2 class="section-title">Resultados</h2>
           <ResultadosEncuesta {encuestaSeleccionada} on:volver={irALista} />
+
+        {:else if vista === 'editar'}
+          <h2 class="section-title">Editar encuesta</h2>
+          <CrearEncuesta
+            modo="editar"
+            encuestaInicial={encuestaSeleccionada}
+            on:creada={irALista}
+          />
         {/if}
       {/if}
     </section>

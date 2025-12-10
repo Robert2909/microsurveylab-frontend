@@ -11,6 +11,14 @@
   function verResultados(encuesta) {
     dispatch('verResultados', encuesta);
   }
+
+  function editar(encuesta) {
+    dispatch('editar', encuesta);
+  }
+
+  function eliminar(encuesta) {
+    dispatch('eliminar', encuesta);
+  }
 </script>
 
 {#if encuestas.length === 0}
@@ -33,8 +41,10 @@
         </div>
 
         <div class="acciones">
-          <button on:click={() => responder(encuesta)}>Responder</button>
-          <button on:click={() => verResultados(encuesta)}>Ver resultados</button>
+        <button on:click={() => responder(encuesta)}>Responder</button>
+        <button on:click={() => verResultados(encuesta)}>Ver resultados</button>
+        <button class="secondary" on:click={() => editar(encuesta)}>Editar</button>
+        <button class="secondary" on:click={() => eliminar(encuesta)}>Eliminar</button>
         </div>
       </li>
     {/each}

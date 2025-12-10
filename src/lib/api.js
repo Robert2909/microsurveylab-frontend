@@ -17,7 +17,6 @@ export async function obtenerEncuestas() {
   }
 }
 
-
 export async function crearEncuesta(payload) {
   const res = await fetch(`${BASE_URL}/encuestas`, {
     method: 'POST',
@@ -50,4 +49,28 @@ export async function obtenerResultados(encuestaId) {
   const res = await fetch(`${BASE_URL}/encuestas/${encuestaId}/resultados`);
   if (!res.ok) throw new Error('Error al obtener resultados');
   return res.json();
+}
+
+export async function actualizarEncuesta(id, payload) {
+  const res = await fetch(`${BASE_URL}/encuestas/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    throw new Error('Error al actualizar la encuesta.');
+  }
+
+  return await res.json();
+}
+
+export async function eliminarEncuesta(id) {
+  const res = await fetch(`${BASE_URL}/encuestas/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!res.ok) {
+    throw new Error('Error al eliminar la encuesta.');
+  }
 }

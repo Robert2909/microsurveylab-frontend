@@ -35,7 +35,7 @@
 </script>
 
 <section class="wrapper">
-  <h3>{encuestaSeleccionada.pregunta}</h3>
+  <h3 class="pregunta">{encuestaSeleccionada.pregunta}</h3>
 
   {#if encuestaSeleccionada.descripcion}
     <p class="text-muted">{encuestaSeleccionada.descripcion}</p>
@@ -81,23 +81,23 @@
     text-align: center;
   }
 
+  .pregunta {
+    margin: 0.25rem 0 0;
+  }
+
   .opciones {
-    margin: 1.5rem auto;
-    width: 100%;
-    max-width: 420px;
+    margin: 1.5rem 0;
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
-    align-items: flex-start;
+    gap: 0.8rem;
+    align-items: center;
   }
 
   .opcion {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    font-size: 0.95rem;
-    cursor: pointer;
-    width: 100%;
+    gap: 0.5rem;
+    text-align: left;
   }
 
   .opcion input {
