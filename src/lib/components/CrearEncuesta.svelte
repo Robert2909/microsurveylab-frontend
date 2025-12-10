@@ -6,7 +6,7 @@
 
   let pregunta = '';
   let descripcion = '';
-  let opciones = ['', '']; // mínimo 2
+  let opciones = ['', ''];
   let error = '';
   let cargando = false;
 
@@ -15,37 +15,36 @@
   }
 
   function eliminarOpcion(index) {
-    if (opciones.length <= 2) return;
-    opciones = opciones.filter((_, i) => i !== index);
+    if (opciones.length > 2)
+      opciones = opciones.filter((_, i) => i !== index);
   }
 
-  async function onSubmit(event) {
+  async function enviar(event) {
     event.preventDefault();
     error = '';
 
-    const opcionesLimpias = opciones.map(o => o.trim()).filter(o => o !== '');
+    const limpias = opciones.map(o => o.trim()).filter(o => o !== '');
 
     if (!pregunta.trim()) {
       error = 'La pregunta es obligatoria.';
       return;
     }
-    if (opcionesLimpias.length < 2) {
-      error = 'Debes proporcionar al menos 2 opciones válidas.';
+
+    if (limpias.length < 2) {
+      error = 'Debes escribir al menos 2 opciones.';
       return;
     }
 
-    const payload = {
-      pregunta: pregunta.trim(),
-      descripcion: descripcion.trim(),
-      opciones: opcionesLimpias
-    };
-
     cargando = true;
     try {
-      await crearEncuesta(payload);
+      await crearEncuesta({
+        pregunta: pregunta.trim(),
+        descripcion: descripcion.trim(),
+        opciones: limpias
+      });
       dispatch('creada');
     } catch (e) {
-      error = e.message || 'Error al crear la encuesta.';
+      error = e.message;
     } finally {
       cargando = false;
     }
@@ -53,57 +52,37 @@
 </script>
 
 {#if error}
-  <p class="error">{error}</p>
+<p class="error">{error}</p>
 {/if}
 
-<form on:submit={onSubmit} class="form">
+<form on:submit={enviar} class="form">
   <div class="campo">
     <label for="pregunta">Pregunta</label>
-    <input
-      id="pregunta"
-      type="text"
-      bind:value={pregunta}
-      placeholder="Escribe la pregunta aquí"
-    />
+    <input type="text" bind:value={pregunta} placeholder="Escribe la pregunta aquí" />
   </div>
 
   <div class="campo">
     <label for="descripcion">Descripción (opcional)</label>
-    <textarea
-      id="descripcion"
-      rows="2"
-      bind:value={descripcion}
-      placeholder="Información adicional para quien responde"
-    ></textarea>
+    <textarea rows="2" bind:value={descripcion}></textarea>
   </div>
 
   <div class="campo">
     <label for="opciones">Opciones</label>
-    {#each opciones as opcion, index}
-      <div class="fila-opcion">
-        <input
-          type="text"
-          bind:value={opciones[index]}
-          placeholder={`Opción ${index + 1}`}
-        />
+
+    {#each opciones as opcion, i}
+      <div class="fila">
+        <input type="text" bind:value={opciones[i]} placeholder={`Opción ${i + 1}`} />
         {#if opciones.length > 2}
-          <button
-            type="button"
-            class="icon-btn"
-            on:click={() => eliminarOpcion(index)}
-          >
-            ✕
-          </button>
+          <button type="button" class="secondary" on:click={() => eliminarOpcion(i)}>✕</button>
         {/if}
       </div>
     {/each}
-    <button type="button" class="secondary" on:click={agregarOpcion}>
-      Agregar opción
-    </button>
+
+    <button type="button" class="secondary" on:click={agregarOpcion}>Agregar opción</button>
   </div>
 
   <button type="submit" class="primary" disabled={cargando}>
-    {#if cargando}Guardando...{:else}Crear encuesta{/if}
+    {cargando ? 'Guardando...' : 'Crear encuesta'}
   </button>
 </form>
 
@@ -117,96 +96,11 @@
   .campo {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.5rem;
   }
 
-  label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #4b5563;
-  }
-
-  input,
-  textarea {
-  border-radius: 0.75rem;
-  border: 1px solid #d1d5db;
-  padding: 0.45rem 0.6rem;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out,
-      background-color 0.15s ease-out, color 0.15s ease-out;
-  background-color: #ffffff;   /* fuerza fondo claro */
-  color: #111827;              /* texto oscuro */
-  }
-
-  input:focus,
-  textarea:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb20;
-  }
-
-  .fila-opcion {
+  .fila {
     display: flex;
-    gap: 0.4rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .icon-btn {
-    border-radius: 0.75rem;
-    border: 1px solid #e5e7eb;
-    background: #f9fafb;
-    padding: 0 0.6rem;
-    cursor: pointer;
-  }
-
-  .icon-btn:hover {
-    background: #fee2e2;
-    border-color: #fecaca;
-  }
-
-  .secondary {
-  align-self: flex-start;
-  margin-top: 0.25rem;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background-color: #f3f4f6;
-  color: #111827;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  }
-
-  .secondary:hover {
-  background-color: #e5e7eb;
-  border-color: #d1d5db;
-  }
-
-  .primary {
-  align-self: center;
-  margin-top: 0.5rem;
-  border-radius: 999px;
-  border: none;
-  background-color: #2563eb;
-  color: #ffffff;
-  padding: 0.45rem 1.4rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease-out, transform 0.08s ease-out;
-  }
-
-  .primary:hover {
-    background: #1d4ed8;
-  }
-
-  .primary:disabled {
-    opacity: 0.7;
-    cursor: default;
-  }
-
-  .error {
-    margin: 0 0 0.5rem;
-    text-align: center;
-    color: #b91c1c;
-    font-size: 0.9rem;
+    gap: 0.5rem;
   }
 </style>
