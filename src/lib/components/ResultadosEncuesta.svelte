@@ -123,12 +123,12 @@
     margin: 0 auto;
     border-radius: 999px;
     border: none;
-    background: #2563eb;
-    color: white;
+    background-color: #2563eb;
+    color: #ffffff;
     padding: 0.4rem 1.2rem;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: background 0.15s ease-out;
+    transition: background-color 0.15s ease-out;
   }
 
   .primary:hover {

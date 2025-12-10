@@ -106,10 +106,6 @@
         {/if}
       {/if}
     </section>
-
-    <footer class="footer">
-      <small>MicroSurveyLab · Proyecto de Desarrollo Web</small>
-    </footer>
   </div>
 </main>
 
@@ -162,8 +158,9 @@
   }
 
   .nav button {
-    border: 1px solid #e5e7eb;
-    background: white;
+    border: 1px solid #d1d5db;
+    background-color: #f3f4f6;
+    color: #111827;
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
     font-size: 0.9rem;
@@ -172,14 +169,14 @@
   }
 
   .nav button:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
   }
 
   .nav button.active {
-    background: #2563eb;
+    background-color: #2563eb;
     border-color: #2563eb;
-    color: white;
+    color: #ffffff;
   }
 
   .content-card {

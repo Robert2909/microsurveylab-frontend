@@ -128,12 +128,15 @@
 
   input,
   textarea {
-    border-radius: 0.75rem;
-    border: 1px solid #d1d5db;
-    padding: 0.45rem 0.6rem;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out,
+      background-color 0.15s ease-out, color 0.15s ease-out;
+  background-color: #ffffff;   /* fuerza fondo claro */
+  color: #111827;              /* texto oscuro */
   }
 
   input:focus,
@@ -162,32 +165,33 @@
   }
 
   .secondary {
-    align-self: flex-start;
-    margin-top: 0.25rem;
-    border-radius: 999px;
-    border: 1px solid #e5e7eb;
-    background: #f9fafb;
-    padding: 0.35rem 0.8rem;
-    font-size: 0.85rem;
-    cursor: pointer;
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background-color: #f3f4f6;
+  color: #111827;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
   }
 
   .secondary:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
+  background-color: #e5e7eb;
+  border-color: #d1d5db;
   }
 
   .primary {
-    align-self: center;
-    margin-top: 0.5rem;
-    border-radius: 999px;
-    border: none;
-    background: #2563eb;
-    color: white;
-    padding: 0.45rem 1.4rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.15s ease-out, transform 0.08s ease-out;
+  align-self: center;
+  margin-top: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 0.45rem 1.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, transform 0.08s ease-out;
   }
 
   .primary:hover {

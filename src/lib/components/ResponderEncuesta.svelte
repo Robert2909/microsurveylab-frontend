@@ -157,19 +157,29 @@
   }
 
   .secondary {
-    border-color: #e5e7eb;
-    background: #f9fafb;
-    color: #374151;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: all 0.15s ease-out;
   }
 
   .secondary:hover {
-    background: #f3f4f6;
+  background-color: #e5e7eb;
   }
 
   .primary {
-    border: none;
-    background: #2563eb;
-    color: white;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  transition: all 0.15s ease-out;
   }
 
   .primary:hover {
