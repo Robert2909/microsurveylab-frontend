@@ -1,20 +1,24 @@
 <script>
   import { onMount } from 'svelte';
-  import { obtenerEncuestas } from './lib/api';
+  import { obtenerEncuestas, eliminarEncuesta } from './lib/api';
 
   import EncuestasLista from './lib/components/EncuestasLista.svelte';
   import CrearEncuesta from './lib/components/CrearEncuesta.svelte';
   import ResponderEncuesta from './lib/components/ResponderEncuesta.svelte';
   import ResultadosEncuesta from './lib/components/ResultadosEncuesta.svelte';
-  import {eliminarEncuesta } from './lib/api';
 
+  // Estado principal: lista de encuestas y flags de UI
   let encuestas = [];
   let cargando = false;
   let error = '';
 
+  // La app funciona con una "vista" simple en memoria.
+  // No usamos router porque el flujo es pequeño y era más directo así.
   let vista = 'lista';
   let encuestaSeleccionada = null;
 
+  // Carga la lista desde el backend.
+  // Se llama al iniciar y también cuando regresamos a la lista.
   async function cargarEncuestas() {
     cargando = true;
     error = '';
@@ -27,6 +31,7 @@
     }
   }
 
+  // Navegación "simple" por estado:
   function irALista() {
     vista = 'lista';
     encuestaSeleccionada = null;
@@ -53,6 +58,7 @@
     vista = 'editar';
   }
 
+  // Eliminar con confirmación para evitar borrados accidentales.
   async function eliminarDesdeLista(encuesta) {
     if (!confirm(`¿Eliminar la encuesta "${encuesta.pregunta}"?`)) return;
 

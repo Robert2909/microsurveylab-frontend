@@ -1,7 +1,10 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+
+  // Lista que recibe el arreglo completo desde App.svelte
   export let encuestas = [];
 
+  // Se usan eventos para no acoplar este componente a la lógica de navegación.
   const dispatch = createEventDispatcher();
 
   function responder(encuesta) {
@@ -40,11 +43,12 @@
           </p>
         </div>
 
+        <!-- Acciones principales del CRUD desde la lista -->
         <div class="acciones">
-        <button on:click={() => responder(encuesta)}>Responder</button>
-        <button on:click={() => verResultados(encuesta)}>Ver resultados</button>
-        <button class="secondary" on:click={() => editar(encuesta)}>Editar</button>
-        <button class="secondary" on:click={() => eliminar(encuesta)}>Eliminar</button>
+          <button on:click={() => responder(encuesta)}>Responder</button>
+          <button on:click={() => verResultados(encuesta)}>Ver resultados</button>
+          <button class="secondary" on:click={() => editar(encuesta)}>Editar</button>
+          <button class="secondary" on:click={() => eliminar(encuesta)}>Eliminar</button>
         </div>
       </li>
     {/each}

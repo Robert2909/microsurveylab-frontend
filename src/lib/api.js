@@ -1,5 +1,8 @@
+// URL base del backend.
+// Se deja en un solo lugar para no estarlo repitiendo en cada fetch.
 const BASE_URL = "https://microsurveylab-backend-production.up.railway.app/api";
 
+// Obtiene todas las encuestas para mostrarlas en la lista principal.
 export async function obtenerEncuestas() {
   try {
     const res = await fetch(`${BASE_URL}/encuestas`);
@@ -17,6 +20,8 @@ export async function obtenerEncuestas() {
   }
 }
 
+// Crea una encuesta nueva.
+// payload: { pregunta, descripcion, opciones[] }
 export async function crearEncuesta(payload) {
   const res = await fetch(`${BASE_URL}/encuestas`, {
     method: 'POST',
@@ -32,6 +37,8 @@ export async function crearEncuesta(payload) {
   return res.json();
 }
 
+// Registra un voto sobre una encuesta.
+// Se manda el opcionId y el encuestaId va en la URL.
 export async function registrarVoto(encuestaId, opcionId) {
   const res = await fetch(`${BASE_URL}/encuestas/${encuestaId}/votos`, {
     method: 'POST',
@@ -45,12 +52,14 @@ export async function registrarVoto(encuestaId, opcionId) {
   }
 }
 
+// Obtiene el conteo/porcentaje por opción para pintar resultados.
 export async function obtenerResultados(encuestaId) {
   const res = await fetch(`${BASE_URL}/encuestas/${encuestaId}/resultados`);
   if (!res.ok) throw new Error('Error al obtener resultados');
   return res.json();
 }
 
+// Actualiza datos básicos de una encuesta (pregunta/descripcion/activa).
 export async function actualizarEncuesta(id, payload) {
   const res = await fetch(`${BASE_URL}/encuestas/${id}`, {
     method: 'PUT',
@@ -65,6 +74,7 @@ export async function actualizarEncuesta(id, payload) {
   return await res.json();
 }
 
+// Elimina una encuesta por id.
 export async function eliminarEncuesta(id) {
   const res = await fetch(`${BASE_URL}/encuestas/${id}`, {
     method: 'DELETE'

@@ -1,3 +1,16 @@
+/*
+  Estilos base del proyecto.
+
+  La idea es mantener una apariencia limpia:
+  - colores neutros
+  - tarjetas con sombra suave
+  - botones simples para navegación y acciones
+
+  Esto si me lo hizo chatgpt jeje
+  Pero no estamos en clase de diseño UI/UX
+  Es justo y necesario.
+*/
+
 :root {
   --color-bg: #f5f5f7;
   --color-surface: #ffffff;

@@ -2,30 +2,31 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { crearEncuesta, actualizarEncuesta } from '../api';
 
-  /**
-   * @typedef {Object} EncuestaDTO
-   * @property {number} id
-   * @property {string} pregunta
-   * @property {string | null} [descripcion]
-   * @property {boolean} [activa]
-   */
+  // Este componente sirve para dos cosas:
+  // - crear encuestas nuevas
+  // - editar datos básicos de una encuesta existente
+  //
+  // Se controla con la prop "modo" y con "encuestaInicial".
 
   /** @type {'crear' | 'editar'} */
   export let modo = 'crear';
 
-  /** @type {EncuestaDTO | null} */
+  /** @type {{ id:number, pregunta:string, descripcion?:string, activa?:boolean } | null} */
   export let encuestaInicial = null;
 
   const dispatch = createEventDispatcher();
 
+  // Campos del formulario.
   let pregunta = '';
   let descripcion = '';
-  let opciones = ['', ''];
+  let opciones = ['', '']; // por defecto, mínimo 2 opciones
   let activa = true;
 
   let error = '';
   let cargando = false;
 
+  // Cuando entramos en modo editar, precargamos los campos.
+  // No se cargan opciones aquí porque en este proyecto editar opciones no era necesario.
   onMount(() => {
     if (modo === 'editar' && encuestaInicial) {
       pregunta = encuestaInicial.pregunta ?? '';
@@ -39,6 +40,7 @@
   }
 
   function eliminarOpcion(index) {
+    // Evitamos que se quede con menos de 2 opciones.
     if (opciones.length <= 2) return;
     opciones = opciones.filter((_, i) => i !== index);
   }
@@ -47,6 +49,7 @@
     event.preventDefault();
     error = '';
 
+    // Normalizamos texto para que no se manden espacios raros.
     const preguntaLimpia = pregunta.trim();
     const descripcionLimpia = descripcion.trim();
 
@@ -55,6 +58,7 @@
       return;
     }
 
+    // Crear: aquí sí se mandan opciones.
     if (modo === 'crear') {
       const opcionesLimpias = opciones
         .map((o) => o.trim())
@@ -74,6 +78,7 @@
       cargando = true;
       try {
         await crearEncuesta(payload);
+        // Avisamos al componente padre para que recargue lista o cambie de vista.
         dispatch('creada');
       } catch (e) {
         error = e.message || 'Error al crear la encuesta.';
@@ -83,6 +88,7 @@
       return;
     }
 
+    // Editar: solo se actualizan datos básicos y el estado activa/inactiva.
     if (modo === 'editar' && encuestaInicial) {
       const payload = {
         pregunta: preguntaLimpia,
@@ -131,17 +137,14 @@
   {#if modo === 'editar'}
     <div class="campo fila-activa">
       <label for="activa">Encuesta activa</label>
-      <input
-        id="activa"
-        type="checkbox"
-        bind:checked={activa}
-      />
+      <input id="activa" type="checkbox" bind:checked={activa} />
     </div>
   {/if}
 
   {#if modo === 'crear'}
     <div class="campo">
       <label for="opciones">Opciones</label>
+
       {#each opciones as opcion, index}
         <div class="fila-opcion">
           <input
@@ -149,6 +152,7 @@
             bind:value={opciones[index]}
             placeholder={`Opción ${index + 1}`}
           />
+
           {#if opciones.length > 2}
             <button
               type="button"
@@ -160,6 +164,7 @@
           {/if}
         </div>
       {/each}
+
       <button type="button" class="secondary" on:click={agregarOpcion}>
         Agregar opción
       </button>
@@ -176,6 +181,7 @@
 </form>
 
 <style>
+  /* Estilos locales del formulario para que el componente sea fácil de reutilizar */
   .form {
     display: flex;
     flex-direction: column;

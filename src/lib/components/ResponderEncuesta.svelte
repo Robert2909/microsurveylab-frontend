@@ -2,6 +2,7 @@
   import { registrarVoto } from '../api';
   import { createEventDispatcher } from 'svelte';
 
+  // Recibe la encuesta con sus opciones ya cargadas (la traemos desde la lista).
   export let encuestaSeleccionada;
 
   const dispatch = createEventDispatcher();
@@ -11,6 +12,7 @@
   let cargando = false;
 
   async function enviar() {
+    // Validación mínima de UI para no mandar requests vacíos.
     if (!opcionId) {
       error = 'Selecciona una opción.';
       return;
@@ -21,6 +23,7 @@
 
     try {
       await registrarVoto(encuestaSeleccionada.id, opcionId);
+      // Volvemos a la vista anterior (normalmente lista o resultados).
       dispatch('terminar');
     } catch (e) {
       error = e.message || 'Error al registrar el voto.';
@@ -63,12 +66,8 @@
     <button type="button" class="secondary" on:click={volver}>
       Volver a encuestas
     </button>
-    <button
-      type="button"
-      class="primary"
-      on:click={enviar}
-      disabled={cargando}
-    >
+
+    <button type="button" class="primary" on:click={enviar} disabled={cargando}>
       {#if cargando}Enviando...{:else}Enviar voto{/if}
     </button>
   </div>

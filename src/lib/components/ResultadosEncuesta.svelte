@@ -3,18 +3,21 @@
   import { createEventDispatcher, onMount } from 'svelte';
 
   export let encuestaSeleccionada;
+
   const dispatch = createEventDispatcher();
 
   let datos = null;
   let cargando = false;
   let error = '';
 
+  // Carga resultados al abrir la pantalla.
   async function cargar() {
     cargando = true;
+    error = '';
     try {
       datos = await obtenerResultados(encuestaSeleccionada.id);
     } catch (e) {
-      error = e.message;
+      error = e.message || 'No se pudieron cargar los resultados.';
     } finally {
       cargando = false;
     }
@@ -36,7 +39,9 @@
         <li>
           <div class="fila">
             <span>{r.texto}</span>
-            <span class="text-muted">{r.totalVotos} voto(s) – {r.porcentaje.toFixed(1)}%</span>
+            <span class="text-muted">
+              {r.totalVotos} voto(s) – {r.porcentaje.toFixed(1)}%
+            </span>
           </div>
 
           <div class="barra">
