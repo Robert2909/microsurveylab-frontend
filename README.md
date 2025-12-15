@@ -1,9 +1,11 @@
 # MicroSurveyLab - Frontend
 
 Este repositorio contiene el frontend del proyecto MicroSurveyLab.
-Desde aquí el usuario interactúa con el sistema de encuestas: crea encuestas, responde y consulta resultados.
+Desde aquí permito al usuario interactuar con el sistema de encuestas.
+Ver, crear, responder y consultar resultados.
 
-El objetivo del frontend es uno solo: ofrecer una interfaz clara que consuma la API del backend sin lógica innecesaria.
+El frontend no intenta hacer más de lo necesario.
+Su función es clara: consumir la API del backend y mostrar la información de forma directa.
 
 ## Enlaces públicos
 
@@ -15,15 +17,19 @@ Repositorio en GitHub:
 
 ## Descripción general
 
-El frontend consume directamente la API REST del backend.
-Toda la comunicación se realiza mediante peticiones HTTP y JSON.
+Este frontend consume la API REST del backend.
+Toda la comunicación se hace mediante peticiones HTTP y JSON.
 
-No existe lógica de negocio compleja en el cliente.
-Las validaciones son mínimas y solo buscan evitar errores evidentes antes de enviar datos al backend.
+No implemento lógica de negocio en el cliente.
+Las decisiones importantes se resuelven en el backend.
+
+Aquí solo valido lo básico.
+Lo suficiente para no enviar datos incorrectos o incompletos.
 
 ## Tecnologías utilizadas
 
-Se utilizó un stack ligero, enfocado en simplicidad:
+Elegí un stack ligero.
+Sin capas innecesarias.
 
 * Svelte
 * JavaScript
@@ -31,13 +37,14 @@ Se utilizó un stack ligero, enfocado en simplicidad:
 * CSS
 * Fetch API
 
-No se añadieron frameworks adicionales que no aportaran valor directo.
+Cada herramienta cumple una función concreta.
+No hay dependencias que no aporten al flujo principal.
 
 ## Ejecución en local
 
-Para ejecutar el frontend en local se requiere:
+Para ejecutar el frontend en local utilizo:
 
-* Node.js (versión LTS recomendada)
+* Node.js (versión LTS)
 * npm
 
 Pasos:
@@ -69,34 +76,37 @@ http://localhost:5173/
 
 ## Conexión con el backend
 
-El frontend consume la API publicada del backend.
-La URL base se define directamente en el archivo de configuración de la capa de acceso a datos.
+El frontend consume directamente la API publicada del backend.
 
-Ejemplo de URL utilizada:
+La URL base se define en el archivo donde centralizo las peticiones.
+
+URL utilizada:
 
 ```js
 https://microsurveylab-backend-production.up.railway.app/api
 ```
 
+No existe configuración dinámica.
+La intención es mantener el flujo simple y transparente.
+
 ## Funcionalidades
 
-Desde el frontend se pueden realizar las siguientes acciones:
+Desde el frontend se puede:
 
-* Visualizar encuestas existentes
-* Crear nuevas encuestas
+* Visualizar encuestas
+* Crear encuestas
 * Responder encuestas activas
-* Consultar resultados de votación
-* Editar información básica de una encuesta
+* Consultar resultados
+* Editar información básica
 * Eliminar encuestas
 
-Cada acción corresponde directamente a un endpoint del backend.
+Cada acción corresponde a un endpoint del backend.
+No hay lógica duplicada.
 
 ## Notas finales
 
 El frontend está organizado por componentes.
-Cada componente cumple una función específica dentro del flujo de la aplicación.
+Cada componente resuelve una tarea específica.
 
 El código contiene comentarios de documentación.
-La prioridad fue mantener el flujo entendible y fácil de explicar durante la revisión.
-
-Quedó bonita la documentación.
+Todo está pensado para que el flujo sea fácil de seguir y explicar durante la revisión.
